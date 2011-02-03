@@ -1,3 +1,10 @@
+.x-form-calendar-picker-field {
+ 	background-color: #fff;
+    width: 100%;
+    min-height: 2.5em;
+    padding: .6em .4em;
+}
+
 .calendar-month td, th {
 	border-left: 1px solid #999;
 	border-bottom: 1px solid #999;
