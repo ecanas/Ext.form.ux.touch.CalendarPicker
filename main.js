@@ -10,7 +10,7 @@ Ext.setup({
 						{
 							xtype: "calendarpickerfield",
 							label: "Choose Date",
-							dateFormat: 'MM/dd/yy',
+							dateFormat: 'm-d-Y',
 							value: new Date()
 						}
 					]
