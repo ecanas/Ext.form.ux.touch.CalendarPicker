@@ -22,7 +22,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
     dateFormat: 'Y-m-d',
     initComponent: function() {
         this.addEvents('select');
- 
+
         this.useMask = true;
 
         var renderTpl = [
@@ -44,10 +44,29 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
     },
 
     initCalendar: function() {
-		this.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        this.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         this.dayNames = ['S', 'M', 'T', 'W', 'TH', 'F', 'S'];
+		this.pYear = new Ext.Button({
+            ui: 'action',
+            iconMask: true,
+            iconCls: "rewind",
+            scope: this,
+            handler: function() {
+                this.prevYear();
+            }
+        });
 
-	    this.navBar = new Ext.Toolbar({
+		this.nYear = new Ext.Button({
+            ui: 'action',
+            iconMask: true,
+            iconCls: "fforward",
+            scope: this,
+            handler: function() {
+                this.nextYear();
+            }
+        });
+
+        this.navBar = new Ext.Toolbar({
             dock: 'top',
             title: '',
             layout: {
@@ -55,8 +74,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
                 align: 'center'
                 // align center is the default
             },
-            items: [
-            {
+            items: [{
                 xtype: 'button',
                 ui: 'action',
                 iconMask: true,
@@ -66,38 +84,41 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
                     this.prevMonth();
                 }
             },
+            (Ext.is.Phone ? {xtype: 'spacer'}: this.pYear),
             {
                 xtype: 'component',
                 flex: 1
             },
-            {
-                xtype: 'button',
-                ui: 'action',
-                iconMask: true,
-                iconCls: "arrow_right",
-                scope: this,
-                handler: function() {
-                    this.nextMonth();
-                }
-            }
+            (Ext.is.Phone ? {xtype: 'spacer'}: this.nYear),
+			{
+	            xtype: 'button',
+	            ui: 'action',
+	            iconMask: true,
+	            iconCls: "arrow_right",
+	            scope: this,
+	            handler: function() {
+	                this.nextMonth();
+	            }
+	        }
             ]
         });
 
-		if(Ext.is.Phone) {
-			this.titleBar = new Ext.Toolbar({
-		            ui: 'light',
-		            height: 40,
-		            dock: 'top',
-		            title: this.label
-		        });
-		}
-		
+        if (Ext.is.Phone) {
+            this.titleBar = new Ext.Toolbar({
+                ui: 'light',
+                height: 40,
+                dock: 'top',
+                title: this.label,
+				items: [this.pYear,{xtype: 'spacer'}, this.nYear]
+            });
+        }
+
         this.calendar = new Ext.Panel({
             scroll: false,
             width: Ext.is.Phone ? Ext.Element.getViewportWidth() : 400,
             height: Ext.is.Phone ? Ext.Element.getViewportHeight() : 408,
             modal: Ext.is.Phone ? undefined: true,
-		    hideOnMaskTap: Ext.is.Phone ? undefined: false,
+            hideOnMaskTap: Ext.is.Phone ? undefined: false,
             floating: true,
             centered: true,
             hidden: true,
@@ -135,7 +156,8 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
                     }
                 }
                 ]
-            }, ((this.titleBar) ? this.titleBar : {})],
+            },
+            ((this.titleBar) ? this.titleBar: {})],
             listeners: {
                 scope: this,
                 render: function() {
@@ -166,9 +188,9 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
                             }
                         },
                         scope: this
-                    });		
+                    });
                 }
-			}
+            }
         });
     },
 
@@ -187,6 +209,16 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
             this.year -= 1;
         }
         else this.month = this.month - 1;
+        this.drawCalendar();
+    },
+
+    nextYear: function() {
+        this.year += 1;
+        this.drawCalendar();
+    },
+
+    prevYear: function() {
+        this.year = this.year - 1;
         this.drawCalendar();
     },
 
@@ -285,10 +317,10 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
         }
         this.now = new Date();
         if (Ext.isDate(this.value)) this.setDate(this.value);
-		else this.setDate(this.now);
-		
+        else this.setDate(this.now);
+
         if (!this.calendar) this.initCalendar();
-		
+
 
         this.drawCalendar();
 
