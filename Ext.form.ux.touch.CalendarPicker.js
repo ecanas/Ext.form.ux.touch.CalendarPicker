@@ -1,14 +1,14 @@
 /*
     Author       : Edgar Canas
-    Site         : http://www.ordersinseconds.com/calendarpicker/
+    Site         : 
     Contact Info : ed.canas@gmail.com
     Purpose      : Creation of a custom calendar picker
 
     License      : GPL v3 (http://www.gnu.org/licenses/gpl.html)
     Warranty     : none
     Price        : free
-    Version      : .9c
-    Date         : 02/03/2011
+    Version      : .9b
+    Date         : 02/02/2011
 */
 
 Ext.ns("Ext.form.ux.touch");
@@ -19,7 +19,6 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
     destroyPickerOnHide: false,
     otherCls: "",
     renderTpl: null,
-    displaySlot: "Date",
     dateFormat: 'Y-m-d',
     initComponent: function() {
         this.addEvents('select');
@@ -84,11 +83,21 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
             ]
         });
 
+		if(Ext.is.Phone) {
+			this.titleBar = new Ext.Toolbar({
+		            ui: 'light',
+		            height: 40,
+		            dock: 'top',
+		            title: this.label
+		        });
+		}
+		
         this.calendar = new Ext.Panel({
             scroll: false,
             width: Ext.is.Phone ? Ext.Element.getViewportWidth() : 400,
             height: Ext.is.Phone ? Ext.Element.getViewportHeight() : 408,
-            modal: false,
+            modal: Ext.is.Phone ? undefined: true,
+		    hideOnMaskTap: Ext.is.Phone ? undefined: false,
             floating: true,
             centered: true,
             hidden: true,
@@ -126,7 +135,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
                     }
                 }
                 ]
-            }],
+            }, ((this.titleBar) ? this.titleBar : {})],
             listeners: {
                 scope: this,
                 render: function() {
@@ -157,9 +166,9 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
                             }
                         },
                         scope: this
-                    });
+                    });		
                 }
-            }
+			}
         });
     },
 
@@ -279,6 +288,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
 		else this.setDate(this.now);
 		
         if (!this.calendar) this.initCalendar();
+		
 
         this.drawCalendar();
 
