@@ -4,7 +4,7 @@
     Contact Info : ed.canas@gmail.com
     Purpose      : Creation of a custom calendar picker
 
-    License      : GPL v3 (http://www.gnu.org/licenses/gpl.html)
+    License      : MIT
     Warranty     : none
     Price        : free
     Version      : .9b
@@ -18,6 +18,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
     picker: null,
     destroyPickerOnHide: false,
     otherCls: "",
+    showYearArrows: false, 
     renderTpl: null,
     dateFormat: 'Y-m-d',
     initComponent: function() {
@@ -51,6 +52,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
             iconMask: true,
             iconCls: "rewind",
             scope: this,
+			hidden: !this.showYearArrows,
             handler: function() {
                 this.prevYear();
             }
@@ -61,6 +63,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
             iconMask: true,
             iconCls: "fforward",
             scope: this,
+			hidden: !this.showYearArrows,
             handler: function() {
                 this.nextYear();
             }
@@ -158,8 +161,11 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
                 ]
             },
             ((this.titleBar) ? this.titleBar: {})],
-            listeners: {
+	        listeners: {
                 scope: this,
+				//orientationchange: function(pn, orientation, w, h) {
+	            //    pn.setSize(w, h);
+	            //},
                 render: function() {
                     this.calendar.mon(this.calendar.el, {
                         swipe: function(directiion) {
@@ -344,7 +350,11 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
         this.setDate(value)
         return this;
     },
-
+	
+	setDateFormat: function(value) {
+		this.dateFormat = value;
+	},
+	
     getText: function() {
         return this.value.format(this.dateFormat);
     },
