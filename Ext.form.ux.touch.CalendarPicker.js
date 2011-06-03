@@ -18,7 +18,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
     picker: null,
     destroyPickerOnHide: false,
     otherCls: "",
-    showYearArrows: false, 
+    showYearArrows: true, 
     renderTpl: null,
     dateFormat: 'Y-m-d',
     initComponent: function() {
