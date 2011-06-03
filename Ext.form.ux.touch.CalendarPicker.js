@@ -23,7 +23,8 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
     dateFormat: 'Y-m-d',
     initComponent: function() {
         this.addEvents('select');
-
+		this.addEvents('beforeselect');
+		
         this.useMask = true;
 
         var renderTpl = [
@@ -335,7 +336,8 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
     },
 
     onPickerChange: function(picker, value) {
-        this.setValue(value);
+	this.fireEvent('beforeselect', this, this.getValue(), value);
+	this.setValue(value);
         this.fireEvent('select', this, this.getValue());
     },
 
@@ -353,7 +355,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
 	
 	setDateFormat: function(value) {
 		this.dateFormat = value;
-	},
+    },
 	
     getText: function() {
         return this.value.format(this.dateFormat);
