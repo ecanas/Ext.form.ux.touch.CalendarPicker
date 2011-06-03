@@ -7,7 +7,7 @@
     License      : MIT
     Warranty     : none
     Price        : free
-    Version      : .9b
+    Version      : .92b
     Date         : 02/02/2011
 */
 
@@ -18,12 +18,11 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
     picker: null,
     destroyPickerOnHide: false,
     otherCls: "",
-    showYearArrows: true, 
+	showYearArrows: true, 
     renderTpl: null,
     dateFormat: 'Y-m-d',
     initComponent: function() {
-        this.addEvents('select');
-		this.addEvents('beforeselect');
+       	this.addEvents(['select', 'beforeselect']);
 		
         this.useMask = true;
 
@@ -336,8 +335,8 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
     },
 
     onPickerChange: function(picker, value) {
-	this.fireEvent('beforeselect', this, this.getValue(), value);
-	this.setValue(value);
+		this.fireEvent('beforeselect', this, this.getValue(), value);
+	    this.setValue(value);
         this.fireEvent('select', this, this.getValue());
     },
 
@@ -355,7 +354,7 @@ Ext.form.ux.touch.CalendarPickerField = Ext.extend(Ext.form.Field, {
 	
 	setDateFormat: function(value) {
 		this.dateFormat = value;
-    },
+	},
 	
     getText: function() {
         return this.value.format(this.dateFormat);
